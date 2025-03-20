@@ -2,7 +2,7 @@
 
 Convert OpenStreetMap (OSM) data to SVG with precise geographic control.
 
-![Previw](./InkscapeScreenshot.png)
+![Previw](https://github.com/piLeoni/osm-to-svg/blob/main/InkscapeScreenshot.png)
 
 ## Installation
 
