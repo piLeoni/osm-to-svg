@@ -98,11 +98,27 @@ osm2svg.fetchArea({
     scale: "1:10000",
     bearing: 0,
     propertiesAsTags: true,
-    query: [
+        query: [
         { way: '"natural"="coastline"' },
+        { relation: '"natural"="coastline"' },
         { way: '"building"' },
-        { way: '"highway"' }
-    ]
+        {
+            way: '"highway"',
+            filters: ['pedestrian',
+                'elevator',
+                'service',
+                'living_street',
+                'tertiary',
+                'primary',
+                'residential',
+                'secondary',
+                'cycleway',
+                'unclassified',
+                'steps',
+                'corridor',
+                'path']
+        }]
+
 }).then(data => {
     // Generate SVG output
     fs.writeFileSync("map.svg", data.svg.generate());
