@@ -72,7 +72,11 @@ interface FetchAreaResult {
 ## Usage Example
 
 ```ts
+// const { OSM2SVG } = require( 'osm-to-svg');
+// const fs = require("fs")
+
 import { OSM2SVG } from 'osm-to-svg';
+import * as fs from "fs"
 
 const osm2svg = new OSM2SVG();
 
@@ -101,9 +105,9 @@ osm2svg.fetchArea({
     ]
 }).then(data => {
     // Generate SVG output
-    console.log(data.svg.generate());
+    fs.writeFileSync("map.svg", data.svg.generate());
     // Access raw GeoJSON
-    console.log(data.geoJSON.collection);
+    fs.writeFileSync("map.geojson", JSON.stringify(data.geoJSON.collection, null,2));
 });
 ```
 
