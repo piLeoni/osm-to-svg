@@ -1,10 +1,10 @@
 import * as turf from "@turf/turf"
-import { Polygon, Feature, Position, Point, GeoJsonProperties, GeoJsonObject, Geometry, LineString } from 'geojson';
+import { Polygon, Feature, LineString } from 'geojson';
 import xmlEscape from "xml-escape"
 import { create } from 'xmlbuilder2';
 
 export function clipLinesWithinPolygon(line: Feature<LineString>, splitter: Feature<Polygon>) {
-  const output: any[] = []
+  const output = []
   //Accept what is entirelly within the polygon
   if (turf.booleanWithin(line, splitter)) output.push(line)
   //Check if it does intersect the polygon
@@ -19,7 +19,7 @@ export function clipLinesWithinPolygon(line: Feature<LineString>, splitter: Feat
   return output
 }
 export function clipPolygonWithinPolygon(polygon: Feature<Polygon>, splitter: Feature<Polygon>) {
-  const output: any[] = []
+  const output = []
   //Accept what is entirelly within the polygon
   if (turf.booleanWithin(polygon, splitter)) output.push(polygon)
   //Check if it does intersect the polygon
@@ -34,17 +34,17 @@ export function clipPolygonWithinPolygon(polygon: Feature<Polygon>, splitter: Fe
 }
 
 
-export function JSONPropertiesToXMLTags(obj: Record<string, any>, separator: string = '_', prefix: string = ''): Record<string, any> {
-  return Object.keys(obj).reduce((acc: Record<string, any>, key: string) => {
+export function JSONPropertiesToXMLTags(obj: Record<string, object | number | object | boolean>, separator: string = '_', prefix: string = ''): Record<string, object | number | object | boolean> {
+  return Object.keys(obj).reduce((acc: Record<string, string | number | object | boolean>, key: string):Record<string, object | number | object | boolean> => {
     const newKey: string = `${prefix ? `${prefix}${separator}${key}` : key}`.replace(/:/g, '_');
-    const value: any = obj[key];
+    const value = obj[key];
 
     if (typeof value === 'object' && value !== null) {
-      Object.assign(acc, JSONPropertiesToXMLTags(value, separator, newKey));
+      Object.assign(acc, JSONPropertiesToXMLTags(value as Record<string, object | number | object | boolean> , separator, newKey));
     } else {
       acc[newKey] = typeof value === "string" ? xmlEscape(value) : value;
     }
-    return acc;
+    return acc as Record<string, object | number | object | boolean>;
   }, {});
 }
 

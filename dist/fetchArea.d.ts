@@ -20,5 +20,5 @@ export interface FetchAreaResult {
         clippingArea: string;
     };
 }
-export declare type FetchArea = (props: FetchAreaOptions) => Promise<FetchAreaResult>;
+export type FetchArea = (props: FetchAreaOptions) => Promise<FetchAreaResult>;
 export declare function fetchArea(props: FetchAreaOptions): Promise<FetchAreaResult>;

@@ -13,5 +13,5 @@ export interface FetchRectangleResult {
     southEast: number[];
     southWest: number[];
 }
-export declare type CreateRectangle = (props: CreateRectangleOptions) => FetchRectangleResult;
+export type CreateRectangle = (props: CreateRectangleOptions) => FetchRectangleResult;
 export declare function createRectangle(props: CreateRectangleOptions): FetchRectangleResult;

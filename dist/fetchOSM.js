@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fetchOSM = void 0;
+exports.fetchOSM = fetchOSM;
 const axios_1 = __importDefault(require("axios"));
 const https_1 = __importDefault(require("https"));
 function fetchOSM(props) {
@@ -31,5 +31,4 @@ function fetchOSM(props) {
             .catch(reject);
     });
 }
-exports.fetchOSM = fetchOSM;
 //# sourceMappingURL=fetchOSM.js.map

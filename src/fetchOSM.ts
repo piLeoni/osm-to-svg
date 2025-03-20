@@ -12,7 +12,7 @@ export interface FetchOSMOptions {
 
 }
 
-export type FetchOSMResult = Promise<any>
+export type FetchOSMResult = Promise<object>
 export type CreateRectangle = (props: FetchOSMOptions) => FetchOSMResult;
 
 export function fetchOSM(props: FetchOSMOptions): FetchOSMResult {
