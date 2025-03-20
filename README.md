@@ -1,6 +1,6 @@
 # OSM-to-SVG
 
-Convert OpenStreetMap (OSM) data to SVG with precise geographic control.
+Convert OpenStreetMap (OSM) data to SVG.
 
 ![Previw](https://github.com/piLeoni/osm-to-svg/blob/main/InkscapeScreenshot.png)
 
@@ -117,6 +117,7 @@ The library produces two types of output:
 - Maintains geographic accuracy
 - Includes converted OSM tags as SVG attributes
 - Suitable for web display or print
+- Tags values are xml-escaped
 
 ### GeoJSON Format
 
@@ -124,14 +125,6 @@ The library produces two types of output:
 - Contains all OSM properties
 - Includes clipping area for boundary control
 - Useful for further processing or analysis
-
-## Dependencies
-
-- `@turf/turf`: Geospatial calculations
-- `axios`: HTTP requests
-- `geojson2svg`: GeoJSON to SVG conversion
-- `proj4`: Coordinate projections
-- `xmlbuilder2`: SVG generation
 
 ## License
 
