@@ -29,7 +29,7 @@ export function fetchOSM(props: FetchOSMOptions): FetchOSMResult {
                 if (typeof q === "string") return `${q.replace(/;$/, "")}(${props.boundingBox.join(",")});`
 
                 if (typeof q === "object" && ("way" in q || "relation" in q)) {
-                    console.warn("This way of passing queries is deprecatd.")
+                    console.warn("This way of passing queries is deprecated. Use string[] instead")
                     if (q.way) return `way[${q.way}${q.filters?.length ? `~"${q.filters.join("|")}"` : ``}](${props.boundingBox.join(",")});`
                     if (q.relation) return `relation[${q.relation}${q.filters?.length ? `~"${q.filters.join("|")}"` : ``}](${props.boundingBox.join(",")});`
                 }
