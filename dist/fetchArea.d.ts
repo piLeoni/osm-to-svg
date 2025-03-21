@@ -2,11 +2,11 @@ import { Feature, Point, GeoJsonProperties, FeatureCollection } from 'geojson';
 import { OSMQueryAtom } from "./fetchOSM";
 export interface FetchAreaOptions {
     center: Feature<Point, GeoJsonProperties>;
-    width: number;
-    height: number;
+    width: number | string;
+    height: number | string;
     bearing?: number;
     scale: string;
-    query: OSMQueryAtom[] | string;
+    query?: string[] | string | OSMQueryAtom[];
     propertiesAsTags?: boolean;
 }
 export interface FetchAreaResult {

@@ -1,3 +1,6 @@
+/**
+ * @deprecated Use string-based queries instead.
+ */
 export interface OSMQueryAtom {
     way?: string;
     relation?: string;
@@ -5,7 +8,7 @@ export interface OSMQueryAtom {
 }
 export interface FetchOSMOptions {
     boundingBox: number[];
-    query: OSMQueryAtom[] | string;
+    query: string[] | string | OSMQueryAtom[];
 }
 export type FetchOSMResult = Promise<object>;
 export type CreateRectangle = (props: FetchOSMOptions) => FetchOSMResult;

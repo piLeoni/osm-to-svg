@@ -12,61 +12,18 @@ npm install osm-to-svg
 
 ## Features
 
-- Geographic precision with customizable scale and dimensions
+- Fetch OSM data with customizable scale and dimensions
 - Support for OSM ways and relations filtering
 - GeoJSON property to SVG tag conversion
 - Boundary clipping for lines and polygons
 - Metric measurements and coordinate projection
 - Rotatable map views with bearing control
 
-## Interface
 
-### OSM2SVGOptions
+## Command line use
 
-```ts
-interface OSM2SVGOptions {
-  center: Feature<Point, GeoJsonProperties>; // Center point of the map
-  width: number;        // Width in millimeters
-  height: number;       // Height in millimeters
-  scale: string;        // Map scale (e.g., "1:10000")
-  bearing?: number;     // Rotation in degrees (default: 0)
-  propertiesAsTags?: boolean; // Convert GeoJSON properties to SVG tags
-  query: Array<{
-    way?: string;       // Query for ways
-    relation?: string;  // Query for relations
-    filters?: string[]; // Additional filters
-  }>;
-}
-```
-
-### FetchAreaOptions
-
-```ts
-interface FetchAreaOptions {
-  center: Feature<Point, GeoJsonProperties>;
-  width: number;
-  height: number;
-  bearing?: number;
-  scale: string;
-  query: OSMQueryAtom[] | string; // A custom query can be passed as a string
-  propertiesAsTags?: boolean;
-}
-```
-
-### FetchAreaResult
-
-```ts
-interface FetchAreaResult {
-  geoJSON: {
-    collection: FeatureCollection;
-    clippingArea: Feature;
-  };
-  svg: {
-    generate: () => string;
-    paths: string[];
-    clippingArea: string;
-  };
-}
+```sh
+npx osm-to-svgsvg --lon -122.393723 --lat 37.795471 --width 200mm --height 100mm --scale 1:10000 --query 'way["highway"~"primary|secondary|pedestrian|tertiary|residential"]' --query 'way["building"]' --svg output.svg --geojson output.geojson
 ```
 
 ## Usage Example
@@ -93,31 +50,19 @@ const center = {
 // Fetch and convert OSM data
 osm2svg.fetchArea({
     center,
-    width: 152,
-    height: 108,
-    scale: "1:10000",
+    width: "150mm",
+    height: "100mm",
     bearing: 0,
+    scale: "1:50000",
     propertiesAsTags: true,
-        query: [
-        { way: '"natural"="coastline"' },
-        { relation: '"natural"="coastline"' },
-        { way: '"building"' },
-        {
-            way: '"highway"',
-            filters: ['pedestrian',
-                'elevator',
-                'service',
-                'living_street',
-                'tertiary',
-                'primary',
-                'residential',
-                'secondary',
-                'cycleway',
-                'unclassified',
-                'steps',
-                'corridor',
-                'path']
-        }]
+    query: [
+        'way["natural"="coastline"]',
+        'relation["natural"="coastline"]',
+        'way["building"]',
+        'way["highway"~"primary|secondary|pedestrian|tertiary|residential"]',
+        'way["bridge"="yes"]',
+        'relation["bridge"="yes"]'
+    ]
 
 }).then(data => {
     // Generate SVG output
@@ -125,6 +70,39 @@ osm2svg.fetchArea({
     // Access raw GeoJSON
     fs.writeFileSync("map.geojson", JSON.stringify(data.geoJSON.collection, null,2));
 });
+```
+
+## Interface
+
+
+### FetchAreaOptions
+
+```ts
+interface FetchAreaOptions {
+  center: Feature<Point, GeoJsonProperties>;
+  width: number;
+  height: number;
+  bearing?: number;
+  scale: string;
+  query: string[] | string; // A custom query can be passed as a string
+  propertiesAsTags?: boolean;
+}
+```
+
+### FetchAreaResult
+
+```ts
+interface FetchAreaResult {
+  geoJSON: {
+    collection: FeatureCollection;
+    clippingArea: Feature;
+  };
+  svg: {
+    generate: () => string;
+    paths: string[];
+    clippingArea: string;
+  };
+}
 ```
 
 ## Output

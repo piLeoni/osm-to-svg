@@ -11,33 +11,20 @@ const center = {
     properties: {},
     geometry: { type: 'Point', coordinates: [-122.393723, 37.795471] }
 };
-const scale = "1:10000";
-const width = 152;
-const height = 108;
-const bearing = 0;
 osm2svg.fetchArea({
-    center, width, height, bearing, scale,
+    center,
+    width: "150mm",
+    height: "100mm",
+    bearing: 0,
+    scale: "1:50000",
     propertiesAsTags: true,
     query: [
-        { way: '"natural"="coastline"' },
-        { relation: '"natural"="coastline"' },
-        { way: '"building"' },
-        {
-            way: '"highway"',
-            filters: ['pedestrian',
-                'elevator',
-                'service',
-                'living_street',
-                'tertiary',
-                'primary',
-                'residential',
-                'secondary',
-                'cycleway',
-                'unclassified',
-                'steps',
-                'corridor',
-                'path']
-        }
+        'way["natural"="coastline"]',
+        'relation["natural"="coastline"]',
+        'way["building"]',
+        'way["highway"~"primary|secondary|pedestrian|tertiary|residential"]',
+        'way["bridge"="yes"]',
+        'relation["bridge"="yes"]'
     ]
 }).then(data => {
     fs_1.default.writeFileSync("little-map.svg", data.svg.generate());
