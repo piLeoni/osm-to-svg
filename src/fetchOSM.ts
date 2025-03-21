@@ -4,7 +4,6 @@ import https from "https"
 /** 
  * @deprecated Use string-based queries instead.
  */
-
 export interface OSMQueryAtom {
     way?: string,
     relation?: string,

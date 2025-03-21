@@ -24,7 +24,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf dist && tsc",
     "example": "tsc && node dist/example.js",
     "lint": "eslint .",
     "release:major": "npm version major",

@@ -1,5 +1,5 @@
 import { Polygon, Feature, Point, GeoJsonProperties, LineString, FeatureCollection, Geometry } from 'geojson';
-import * as turf from '@turf/turf';
+import {bbox} from '@turf/bbox';
 import { createBounds } from "./createBounds";
 import { fetchOSM, OSMQueryAtom } from "./fetchOSM";
 import osmtogeojson from "osmtogeojson";
@@ -50,8 +50,8 @@ export function fetchArea(props: FetchAreaOptions): Promise<FetchAreaResult> {
         (async () => {
             try {
                 const { bounds, northWest, southEast } = createBounds({ ...props, width: widthMM / 1000, height: heightMM / 1000 });
-                const bbox = turf.bbox(bounds)
-                const boundingBox = [bbox[1], bbox[0], bbox[3], bbox[2]]
+                const bb = bbox(bounds)
+                const boundingBox = [bb[1], bb[0], bb[3], bb[2]]
 
                 const response = await fetchOSM({ boundingBox, query: props.query || ['way["highway"]'] }).catch(console.error)
                 if (response && "data" in response) {

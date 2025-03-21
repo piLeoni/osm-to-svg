@@ -1,6 +1,5 @@
-// import { Cartograph } from ".";
 import { Polygon, Feature, Point, GeoJsonProperties } from 'geojson';
-import * as turf from '@turf/turf';
+import {destination, point, polygon, transformRotate} from "@turf/turf"
 import { getScaleFactor } from './utils';
 export interface CreateBoundsOptions {
     center: Feature<Point, GeoJsonProperties>;
@@ -27,18 +26,18 @@ export function createBounds(props: CreateBoundsOptions): FetchBoundsResult {
     const widthMeters = props.width * scaleFactor;
     const heightMeters = props.height * scaleFactor;
 
-    const north = turf.destination(props.center, heightMeters / 1000 / 2, 0).geometry.coordinates;
-    const south = turf.destination(props.center, heightMeters / 1000 / 2, 180).geometry.coordinates;
-    const west = turf.destination(props.center, widthMeters / 1000 / 2, -90).geometry.coordinates;
-    const east = turf.destination(props.center, widthMeters / 1000 / 2, 90).geometry.coordinates;
-    const northEast = turf.point([east[0], north[1]]).geometry.coordinates;
-    const northWest = turf.point([west[0], north[1]]).geometry.coordinates;
-    const southEast = turf.point([east[0], south[1]]).geometry.coordinates;
-    const southWest = turf.point([west[0], south[1]]).geometry.coordinates;
+    const north = destination(props.center, heightMeters / 1000 / 2, 0).geometry.coordinates;
+    const south = destination(props.center, heightMeters / 1000 / 2, 180).geometry.coordinates;
+    const west = destination(props.center, widthMeters / 1000 / 2, -90).geometry.coordinates;
+    const east = destination(props.center, widthMeters / 1000 / 2, 90).geometry.coordinates;
+    const northEast = point([east[0], north[1]]).geometry.coordinates;
+    const northWest = point([west[0], north[1]]).geometry.coordinates;
+    const southEast = point([east[0], south[1]]).geometry.coordinates;
+    const southWest = point([west[0], south[1]]).geometry.coordinates;
 
-    let bounds: Feature<Polygon, GeoJsonProperties> = turf.polygon([[northEast, northWest, southWest, southEast, northEast]]);
+    let bounds: Feature<Polygon, GeoJsonProperties> = polygon([[northEast, northWest, southWest, southEast, northEast]]);
     if (props.bearing) {
-        bounds = turf.transformRotate(bounds, props.bearing, { pivot: props.center });
+        bounds = transformRotate(bounds, props.bearing, { pivot: props.center });
     }
 
     return {
