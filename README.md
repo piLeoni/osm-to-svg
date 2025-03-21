@@ -23,7 +23,7 @@ npm install osm-to-svg
 ## Command line use
 
 ```sh
-npx osm-to-svgsvg --lon -122.393723 --lat 37.795471 --width 200mm --height 100mm --scale 1:10000 --query 'way["highway"~"primary|secondary|pedestrian|tertiary|residential"]' --query 'way["building"]' --svg output.svg --geojson output.geojson
+npx osm-to-svg --lon -122.393723 --lat 37.795471 --width 200mm --height 100mm --scale 1:10000 --query 'way["highway"~"primary|secondary|pedestrian|tertiary|residential"]' --query 'way["building"]' --svg output.svg --geojson output.geojson
 ```
 
 ## Usage Example
