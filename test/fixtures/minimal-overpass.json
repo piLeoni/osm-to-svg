@@ -1,0 +1,19 @@
+{
+  "version": 0.6,
+  "generator": "fixture",
+  "osm3s": {
+    "timestamp_osm_base": "2026-02-27T00:00:00Z",
+    "copyright": ""
+  },
+  "elements": [
+    {
+      "type": "node",
+      "id": 1,
+      "lat": 37.795471,
+      "lon": -122.393723,
+      "tags": {
+        "name": "Fixture Node"
+      }
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "name": "osm-to-svg",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
@@ -26,6 +26,7 @@
   "scripts": {
     "build": "rm -rf dist && tsc",
     "example": "tsc && node dist/example.js",
+    "test": "npm run build && node --test test/**/*.test.js",
     "lint": "eslint .",
     "release:major": "npm version major",
     "release:minor": "npm version minor",
