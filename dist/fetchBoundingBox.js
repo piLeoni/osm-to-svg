@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.fetchBoundingBox = fetchBoundingBox;
-const turf_1 = require("@turf/turf");
+const bbox_polygon_1 = require("@turf/bbox-polygon");
 const osmtogeojson_1 = __importDefault(require("osmtogeojson"));
 const geojson2svg_1 = require("geojson2svg");
 const fetchOSM_1 = require("./fetchOSM");
@@ -27,7 +27,7 @@ function fetchBoundingBox(props) {
                 const unitsToMM = 3.7795275591;
                 const pixelSizes = { width: widthMM * unitsToMM, height: heightMM * unitsToMM };
                 const [south, west, north, east] = props.boundingBox;
-                const clippingArea = (0, turf_1.bboxPolygon)([west, south, east, north]);
+                const clippingArea = (0, bbox_polygon_1.bboxPolygon)([west, south, east, north]);
                 const response = yield (0, fetchOSM_1.fetchOSM)({
                     boundingBox: props.boundingBox,
                     query: props.query || ['way["highway"]']

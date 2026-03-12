@@ -1,5 +1,7 @@
 import { Polygon, Feature, Point, GeoJsonProperties } from 'geojson';
-import {destination, point, polygon, transformRotate} from "@turf/turf"
+import { destination } from "@turf/destination";
+import { point, polygon } from "@turf/helpers";
+import { transformRotate } from "@turf/transform-rotate";
 import { getScaleFactor } from './utils';
 export interface CreateBoundsOptions {
     center: Feature<Point, GeoJsonProperties>;

@@ -15,7 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.fetchOSMFile = fetchOSMFile;
 const fs_1 = __importDefault(require("fs"));
 const jsdom_1 = require("jsdom");
-const turf_1 = require("@turf/turf");
+const bbox_1 = require("@turf/bbox");
+const bbox_polygon_1 = require("@turf/bbox-polygon");
 const osmtogeojson_1 = __importDefault(require("osmtogeojson"));
 const geojson2svg_1 = require("geojson2svg");
 const utils_1 = require("./utils");
@@ -33,10 +34,10 @@ function fetchOSMFile(props) {
                     ? JSON.parse(trimmed)
                     : new jsdom_1.JSDOM(fileContent, { contentType: "text/xml" }).window.document;
                 const geoJSON = (0, osmtogeojson_1.default)(osmInput, { flatProperties: false });
-                const computedBbox = (0, turf_1.bbox)(geoJSON);
+                const computedBbox = (0, bbox_1.bbox)(geoJSON);
                 const [west, south, east, north] = computedBbox;
                 const [bbSouth, bbWest, bbNorth, bbEast] = props.boundingBox || [south, west, north, east];
-                const clippingArea = (0, turf_1.bboxPolygon)([bbWest, bbSouth, bbEast, bbNorth]);
+                const clippingArea = (0, bbox_polygon_1.bboxPolygon)([bbWest, bbSouth, bbEast, bbNorth]);
                 const converter = new geojson2svg_1.GeoJSON2SVG({
                     viewportSize: pixelSizes,
                     mapExtent: { top: bbNorth, left: bbWest, right: bbEast, bottom: bbSouth }

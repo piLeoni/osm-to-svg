@@ -1,5 +1,5 @@
 import { Feature, FeatureCollection, GeoJsonProperties, Geometry, Polygon } from "geojson";
-import { bboxPolygon } from "@turf/turf";
+import { bboxPolygon } from "@turf/bbox-polygon";
 import osmtogeojson from "osmtogeojson";
 import { GeoJSON2SVG } from "geojson2svg";
 import { fetchOSM, OSMQueryAtom } from "./fetchOSM";

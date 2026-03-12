@@ -1,7 +1,8 @@
 import fs from "fs";
 import { JSDOM } from "jsdom";
 import { Feature, FeatureCollection, GeoJsonProperties, Geometry, Polygon } from "geojson";
-import { bbox, bboxPolygon } from "@turf/turf";
+import { bbox } from "@turf/bbox";
+import { bboxPolygon } from "@turf/bbox-polygon";
 import osmtogeojson from "osmtogeojson";
 import { GeoJSON2SVG } from "geojson2svg";
 import { JSONPropertiesToXMLTags, buildSVG, parseLength } from "./utils";

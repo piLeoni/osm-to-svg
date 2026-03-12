@@ -1,20 +1,24 @@
-import * as turf from "@turf/turf"
 import { Polygon, Feature, LineString } from 'geojson';
 import xmlEscape from "xml-escape"
 import { create } from 'xmlbuilder2';
 import convert from 'convert-units';
+import { booleanWithin } from "@turf/boolean-within";
+import { booleanIntersects } from "@turf/boolean-intersects";
+import { lineSplit } from "@turf/line-split";
+import { intersect } from "@turf/intersect";
+import { featureCollection } from "@turf/helpers";
 
 export function clipLinesWithinPolygon(line: Feature<LineString>, splitter: Feature<Polygon>) {
   const output = []
   //Accept what is entirelly within the polygon
-  if (turf.booleanWithin(line, splitter)) output.push(line)
+  if (booleanWithin(line, splitter)) output.push(line)
   //Check if it does intersect the polygon
-  if (turf.booleanIntersects(line, splitter)) {
-    const sliced = turf.lineSplit(line, splitter);
+  if (booleanIntersects(line, splitter)) {
+    const sliced = lineSplit(line, splitter);
     if (sliced.features.length) {
       sliced.features.map((f, i) => f.properties = { ...line.properties, sliced: true, id: `${line.properties!.id!}/slice/${i}` })
       // return only the segments within it
-      output.push(sliced.features.filter(_f => turf.booleanWithin(_f, splitter)))
+      output.push(sliced.features.filter(_f => booleanWithin(_f, splitter)))
     }
   }
   return output
@@ -22,10 +26,10 @@ export function clipLinesWithinPolygon(line: Feature<LineString>, splitter: Feat
 export function clipPolygonWithinPolygon(polygon: Feature<Polygon>, splitter: Feature<Polygon>) {
   const output = []
   //Accept what is entirelly within the polygon
-  if (turf.booleanWithin(polygon, splitter)) output.push(polygon)
+  if (booleanWithin(polygon, splitter)) output.push(polygon)
   //Check if it does intersect the polygon
-  if (turf.booleanIntersects(polygon, splitter)) {
-    const sliced = turf.intersect(turf.featureCollection([polygon, splitter]))
+  if (booleanIntersects(polygon, splitter)) {
+    const sliced = intersect(featureCollection([polygon, splitter]))
     if (sliced) {
       sliced.properties = { ...polygon.properties, sliced: true };
       output.push(sliced);

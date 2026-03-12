@@ -1,37 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -43,22 +10,26 @@ exports.buildSVG = buildSVG;
 exports.parseLength = parseLength;
 exports.getScaleFactor = getScaleFactor;
 exports.rotateCoordinates = rotateCoordinates;
-const turf = __importStar(require("@turf/turf"));
 const xml_escape_1 = __importDefault(require("xml-escape"));
 const xmlbuilder2_1 = require("xmlbuilder2");
 const convert_units_1 = __importDefault(require("convert-units"));
+const boolean_within_1 = require("@turf/boolean-within");
+const boolean_intersects_1 = require("@turf/boolean-intersects");
+const line_split_1 = require("@turf/line-split");
+const intersect_1 = require("@turf/intersect");
+const helpers_1 = require("@turf/helpers");
 function clipLinesWithinPolygon(line, splitter) {
     const output = [];
     //Accept what is entirelly within the polygon
-    if (turf.booleanWithin(line, splitter))
+    if ((0, boolean_within_1.booleanWithin)(line, splitter))
         output.push(line);
     //Check if it does intersect the polygon
-    if (turf.booleanIntersects(line, splitter)) {
-        const sliced = turf.lineSplit(line, splitter);
+    if ((0, boolean_intersects_1.booleanIntersects)(line, splitter)) {
+        const sliced = (0, line_split_1.lineSplit)(line, splitter);
         if (sliced.features.length) {
             sliced.features.map((f, i) => f.properties = Object.assign(Object.assign({}, line.properties), { sliced: true, id: `${line.properties.id}/slice/${i}` }));
             // return only the segments within it
-            output.push(sliced.features.filter(_f => turf.booleanWithin(_f, splitter)));
+            output.push(sliced.features.filter(_f => (0, boolean_within_1.booleanWithin)(_f, splitter)));
         }
     }
     return output;
@@ -66,11 +37,11 @@ function clipLinesWithinPolygon(line, splitter) {
 function clipPolygonWithinPolygon(polygon, splitter) {
     const output = [];
     //Accept what is entirelly within the polygon
-    if (turf.booleanWithin(polygon, splitter))
+    if ((0, boolean_within_1.booleanWithin)(polygon, splitter))
         output.push(polygon);
     //Check if it does intersect the polygon
-    if (turf.booleanIntersects(polygon, splitter)) {
-        const sliced = turf.intersect(turf.featureCollection([polygon, splitter]));
+    if ((0, boolean_intersects_1.booleanIntersects)(polygon, splitter)) {
+        const sliced = (0, intersect_1.intersect)((0, helpers_1.featureCollection)([polygon, splitter]));
         if (sliced) {
             sliced.properties = Object.assign(Object.assign({}, polygon.properties), { sliced: true });
             output.push(sliced);
