@@ -52,6 +52,8 @@ Using a local `.osm` file:
 npx osm-to-svg --osm ./extract.osm --width 200mm --height 100mm --svg output.svg --geojson output.geojson
 ```
 
+`./extract.osm` is only an example path. Replace it with your own local `.osm` file.
+
 For local development in this repository, replace `npx osm-to-svg` with:
 
 ```sh
@@ -211,6 +213,22 @@ Current tests include CLI integration checks for:
 - `--bbox` / `--osm` flag visibility in help
 - local file conversion (`--osm`) using an offline fixture
 - input validation for malformed `--bbox`
+
+## Troubleshooting
+
+- If CLI startup fails with an ESM/CJS error (for example `ERR_REQUIRE_ESM`), update to the latest `main`, then reinstall and rebuild:
+
+```sh
+git pull
+npm install
+npm run build
+```
+
+- If Overpass requests fail with HTTP 406 (`https://overpass-api.de/api/interpreter`), the public instance is rejecting a generic HTTP client. Current `osm-to-svg` sends an identifying `User-Agent`. If a public instance still rejects you, point `OVERPASS_URL` at another interpreter:
+
+```sh
+OVERPASS_URL=https://overpass.kumi.systems/api/interpreter npx osm-to-svg --lon -122.393723 --lat 37.795471 --width 200mm --height 100mm --scale 1:10000 --svg output.svg
+```
 
 ## License
 
